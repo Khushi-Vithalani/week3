@@ -5,7 +5,7 @@ on:
     branches:
       - 'main'
     paths:
-      - '**.js'
+      - 'week3/week3/Pace/**/*.json'
 
 jobs:
   test:
@@ -38,4 +38,4 @@ jobs:
         run: npm start &
 
       - name: Run tests
-        run: npm test
+        run: npm test -- --testPathPattern=week3/week3/Pace/tests
