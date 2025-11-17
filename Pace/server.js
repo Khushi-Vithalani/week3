@@ -1,4 +1,4 @@
-//this is a new comment for lab6
+//this is a test comment for lab 6
 require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
