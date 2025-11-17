@@ -1,15 +1,13 @@
 name: Run Tests on Push
 
-# Trigger workflow on push to main or develop branches
 on:
   push:
     branches:
-      - main  # You can change this to your target branch if it's different
-      - develop  # Or any other branch you want to monitor
+      - main  # Or your target branch
 
 jobs:
   test:
-    runs-on: ubuntu-latest  # You can change this to macos-latest or windows-latest if needed
+    runs-on: ubuntu-latest
 
     steps:
       # Step 1: Checkout the repository
@@ -20,14 +18,19 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'  # Specify the Node.js version required for your project
+          node-version: '16'
 
       # Step 3: Install dependencies inside the 'Pace' directory
       - name: Install dependencies
-        working-directory: Pace  # Make sure npm install runs in the correct directory
+        working-directory: Pace
         run: npm install
 
-      # Step 4: Run tests inside the 'Pace' directory
+      # Step 4: Ensure all node_modules binaries are executable (permissions fix)
+      - name: Fix permissions for node_modules/.bin
+        working-directory: Pace
+        run: chmod -R +x Pace/node_modules/.bin
+
+      # Step 5: Run tests with Jest (or npx)
       - name: Run npm test
-        working-directory: Pace  # Make sure npm test runs in the correct directory
+        working-directory: Pace
         run: npm test
