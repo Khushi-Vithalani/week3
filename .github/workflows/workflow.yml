@@ -22,13 +22,19 @@ jobs:
 
       # Step 3: Install dependencies inside the 'Pace' directory
       - name: Install dependencies
-        working-directory: Pace
+        working-directory: Pace  # Ensure npm install runs in the correct directory
         run: npm install
 
-      # Step 4: Ensure all node_modules binaries are executable (permissions fix)
-      - name: Fix permissions for node_modules/.bin
+      # Step 4: Verify that node_modules/.bin exists (and only run chmod if it does)
+      - name: Check if node_modules/.bin exists
         working-directory: Pace
-        run: chmod -R +x Pace/node_modules/.bin
+        run: |
+          if [ -d "node_modules/.bin" ]; then
+            echo "Found node_modules/.bin, fixing permissions"
+            chmod -R +x node_modules/.bin
+          else
+            echo "node_modules/.bin not found, skipping chmod"
+          fi
 
       # Step 5: Run tests with Jest (or npx)
       - name: Run npm test
